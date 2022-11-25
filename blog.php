@@ -40,6 +40,7 @@
 </head>
 <?php
 require_once('config/bddesign_db.php');
+error_reporting(0);
 $page = $_GET['page'];
 $blog_count = $conn->prepare("SELECT * FROM blog ");
 $blog_count->execute();
@@ -86,7 +87,7 @@ $row_blog = $blog->fetchAll();
 					<?php foreach ($row_blog as $row_blog) { ?>
 
 						<div class="col-md-6 col-lg-4">
-							<a href="blog-detail.php" class="item-blog">
+							<a href="blog-detail.php?blog=<?=$row_blog['id'] ?>" class="item-blog">
 								<div class="blog-img">
 									<img class="las-img" width="416px" height="312px" src="webpanel/assets/blog_upload/<?= $row_blog['blog_img1'] ?>" alt="Monarch, khao-tao">
 								</div>

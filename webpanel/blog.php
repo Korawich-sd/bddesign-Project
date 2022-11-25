@@ -4,7 +4,7 @@
 
 <?php include('menu_l.php');
 require_once('../config/bddesign_db.php');
-
+error_reporting(0);
 $page = $_GET['page'];
 $blog_count = $conn->prepare("SELECT * FROM blog");
 $blog_count->execute();

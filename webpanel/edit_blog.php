@@ -125,7 +125,7 @@ if (isset($_POST['edit-blog'])) {
                         <label for="paragraph3" class="mt-3 paragraph3">เนื้อหาย่อหน้าที่ 3 (ไม่จำเป็น)</label>
                         <textarea type="text" name="paragraph3" id="paragraph3" class="form-control "><?= $row_data_blog["paragraph2"] ?></textarea>
 
-                        <div class="txt-img mt-4"><span>รูปภาพใหม่</span></div>
+                        <div class="txt-img mt-4"><span>รูปภาพใหม่ (กรุณาเพิ่มทั้ง 3 รูปภาพ)</span></div>
                         <div class="pos">
                             <div class="filewrap">
                                 <input name="img1" id="imgInput1" class="form-control" type="file" />
@@ -149,17 +149,19 @@ if (isset($_POST['edit-blog'])) {
 
                         <div class="txt-img mt-4"><span>รูปภาพเดิม</span></div>
                         <div class="pos">
+                            <?php
+                            $row_img1 = explode(".",$row_data_blog["blog_img1"]);
+                            $row_img2 = explode(".",$row_data_blog["blog_img2"]);
+                            $row_img3 = explode(".",$row_data_blog["blog_img3"]);
+                                ?>
                             <div class="filewrap">
-
-                                <img width="100%" src="assets/blog_upload/<?= $row_data_blog["blog_img1"] ?>" alt="">
+                                <img width="100%" src="assets/blog_upload/<?php if($row_img1[1] == null){echo 'file-upload.png';}else{echo $row_data_blog['blog_img1'];}?>" alt="ไม่มีรูปภาพ">
                             </div>
                             <div class="filewrap">
-
-                                <img width="100%" src="assets/blog_upload/<?= $row_data_blog["blog_img2"] ?>" alt="">
+                                <img width="100%" src="assets/blog_upload/<?php if($row_img2[1] == null){echo 'file-upload.png';}else{echo $row_data_blog['blog_img2'];}?>" alt="ไม่มีรูปภาพ">
                             </div>
                             <div class="filewrap">
-
-                                <img width="100%" src="assets/blog_upload/<?= $row_data_blog["blog_img3"] ?>" alt="">
+                                <img width="100%" src="assets/blog_upload/<?php if($row_img3[1] == null){echo 'file-upload.png';}else{echo $row_data_blog['blog_img3'];}?>"alt="ไม่มีรูปภาพ">
                             </div>
                         </div>
                     </div>

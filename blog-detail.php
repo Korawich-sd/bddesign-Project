@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="desktop">
+
 <head>
 
 	<link rel="shortcut icon" href="images/favicon.ico">
@@ -12,16 +13,12 @@
 
 	<title>รับสร้างบ้าน ออกแบบบ้าน และเขียนแบบบ้าน เรามุ่งเน้นให้บริการดูแลลูกค้าอย่างครบวงจร</title>
 
-
-
-
-
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300;400;500;600;700;800;900&display=swap">
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp">
 	<link rel="stylesheet" type="text/css" href="css/fontello.css?v=1001">
 	<link href="css/spinner.css?v=1001" rel="stylesheet">
 	<!-- CSS only -->
-	<link href="css/bootstrap.min.css?v=1001" rel="stylesheet" >
+	<link href="css/bootstrap.min.css?v=1001" rel="stylesheet">
 
 	<link rel="stylesheet" href="css/coreNavigation.css?v=1001" />
 	<link rel="stylesheet" href="css/typography.css?v=1001" />
@@ -39,22 +36,27 @@
 	<link href="css/slick-custom.css?v=1001" rel="stylesheet">
 
 </head>
+<?php
+require_once('config/bddesign_db.php');
+if (isset($_GET['blog'])) {
+	$blog = $_GET['blog'];
+	$blog_detail = $conn->prepare("SELECT * FROM blog WHERE id = :id");
+	$blog_detail->bindParam(":id", $blog);
+	$blog_detail->execute();
+	$detail_blog = $blog_detail->fetch(PDO::FETCH_ASSOC);
+}
+?>
+<style>
+	.img-none {
+		display: none;
+	}
+</style>
+
 <body>
 	<main>
-
-
-
-		<?php include("header.php");?>
-		
-
+		<?php include("header.php"); ?>
 
 		<div class="slider">
-
-
-
-
-
-
 			<div class="ps-0 pe-0">
 
 				<div class="item-slide">
@@ -64,7 +66,7 @@
 
 				</div>
 
-			</div>    
+			</div>
 
 
 
@@ -74,58 +76,66 @@
 		<section id="page-section">
 			<div class="container-xxl">
 
-				<?php include("navigator.php");?>
+				<?php include("navigator.php"); ?>
 
 
-				<h4>7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ</h4>
+				<h4><?= $detail_blog["title_blog"] ?></h4>
 
-				<span class="text-dark mb-4 d-inline-block">02/05/2555</span>
-
-
-
-				<p>พื้นบ้านเป็นส่วนประกอบสำคัญที่ช่วยเพิ่มความสวยงาม ทันสมัย ให้กับห้องต่าง ๆ ในบ้านได้เป็นอย่างดี และยังบ่งบอกไลฟ์สไตล์ความชอบของเจ้าของบ้าน ปัจจุบันวัสดุปูพื้นก็มีให้เลือกมากมายหลายแบบ ใช้ตกแต่งพื้นบ้านได้ทุกส่วนทั้งภายใน ภายนอก โดยพื้นแต่ละแบบก็มีจุดเด่นที่แตกต่างกันออกไป เข้ากันได้ดีกับการใช้งานและการตกแต่งห้องหลายสไตล์ แต่จะมีอะไรบ้างนั้น และควรปูพื้นบ้านแบบไหนดี วันนี้จระเข้มีคำตอบมาฝากทุกคนกัน</p>
-
-
-				<p>พื้นไม้จริง คือ พื้นบ้านที่ผลิตจากไม้จากธรรมชาติ โดยนิยมใช้ไม้เนื้อแข็งทั้งจากไม้ในไทย เช่น ไม้สัก ไม้มะค่า ไม้เต็ง ไม้แดง และไม้จากต่างประเทศ เช่น ไม้โอ๊ค ไม้บีช ไม้เมเปิ้ล มีจุดเด่นที่ความแข็งแรงทนทาน โดยใช้งานได้ทั้งในบ้านไม้และบ้านปูนหลากหลายสไตล์ </p>
-
-
-				<p>แต่เนื่องจากไม้จากธรรมชาตินั้นหาได้ยากมากขึ้นในปัจจุบัน จึงทำให้พื้นไม้จริงมีราคาสูงมากยิ่งขึ้น จึงมีการพัฒนาไม้เอ็นจิเนียร์ที่มีราคาถูกกว่าขึ้นมาใช้ทดแทน โดยเป็นการนำผิวไม้จริงมาใช้เป็นพื้นผิวประสานกับไม้เนื้อแข็ง และอัดน้ำยากันปลวก เพื่อป้องกันปัญหาปลวกและแมลง</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+				<span class="text-dark mb-4 d-inline-block">
+					<?php
+					$dateTime = $detail_blog["created_blog"];
+					$splitTime = explode(" ", $dateTime);
+					$date = $splitTime[0];
+					echo $date;
+					?>
+				</span>
+				<p><?= $detail_blog["paragraph1"] ?></p>
+				<p><?= $detail_blog["paragraph2"] ?></p>
+				<p><?= $detail_blog["paragraph3"] ?></p>
 				<div class="row mt-4">
-
-
-					<?php for($i=1;$i<=3;$i++){ ?> 
-						<div class="col-6 col-md-4">
-							<div class="view-seventh mb-4">
-								<a href="upload/blog0<?=$i?>.webp" class="b-link-stripe b-animate-go thickbox" title="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
-									<div class="box-gallery">
-										<div class="bg-img">
-											<img class="img-fluid" src="upload/blog0<?=$i?>.webp" alt="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
-										</div>
-
+					<?php
+					//ตัดนามสกุลไฟล์
+					$row_img1 = explode(".", $detail_blog["blog_img1"]);
+					$row_img2 = explode(".", $detail_blog["blog_img2"]);
+					$row_img3 = explode(".", $detail_blog["blog_img3"]);
+					?>
+					<div class="col-6 col-md-4">
+						<div class="view-seventh mb-4">
+							<a href="webpanel/assets/blog_upload/<?= $detail_blog["blog_img1"] ?>" class="b-link-stripe b-animate-go thickbox" title="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
+								<div class="box-gallery">
+									<div class="bg-img <?php if ($row_img1[1] == null) {echo 'img-none';} ?>">
+										<img class="img-fluid" src="webpanel/assets/blog_upload/<?= $detail_blog["blog_img1"] ?>" alt="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
 									</div>
-								</a>
-							</div>
+
+								</div>
+							</a>
 						</div>
-					<?php } ?>
+					</div>
+					<div class="col-6 col-md-4">
+						<div class="view-seventh mb-4">
+							<a href="webpanel/assets/blog_upload/<?= $detail_blog["blog_img2"] ?>" class="b-link-stripe b-animate-go thickbox" title="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
+								<div class="box-gallery">
+									<div class="bg-img <?php if ($row_img2[1] == null) {echo 'img-none';} ?>">															
+										<img class="img-fluid" src="webpanel/assets/blog_upload/<?= $detail_blog["blog_img2"] ?>" alt="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
+									</div>
 
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-6 col-md-4">
+						<div class="view-seventh mb-4">
+							<a href="webpanel/assets/blog_upload/<?= $detail_blog["blog_img3"] ?>" class="b-link-stripe b-animate-go thickbox" title="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
+								<div class="box-gallery">
+									<div class="bg-img <?php if ($row_img3[1] == null) {echo 'img-none';} ?>">
+										<img class="img-fluid" src="webpanel/assets/blog_upload/<?= $detail_blog["blog_img3"] ?>" alt="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
+									</div>
+
+								</div>
+							</a>
+						</div>
+					</div>
 				</div>
-
-
-
 			</div>
 		</section>
 
@@ -140,7 +150,7 @@
 
 
 
-	<?php include("footer.php");?>
+	<?php include("footer.php"); ?>
 
 
 	<script src="js/bootstrap.bundle.min.js?v=1001"></script>
@@ -148,7 +158,7 @@
 	<script src="js/coreNavigation.js?v=1001"></script>
 	<script>
 		$('nav').coreNavigation({
-			menuPosition: "center", 
+			menuPosition: "center",
 			container: true,
 			responsideSlide: true, // true or false
 			mode: 'sticky',
@@ -170,13 +180,12 @@
 	</script>
 
 	<script type="text/javascript">
-
-		'use strict'; 
-		var $window = $(window); 
+		'use strict';
+		var $window = $(window);
 		$window.on({
-			'load': function () {
+			'load': function() {
 
-				/* Preloader */ 
+				/* Preloader */
 				$('.spinner').fadeOut(1500);
 
 
@@ -184,7 +193,6 @@
 			},
 
 		});
-
 	</script>
 
 
@@ -199,7 +207,7 @@
 	<!-- Template Functions -->
 	<script src="js/functions.js?v=1001"></script>
 
-	<script  src="js/lazyload.js?v=1001"></script>
+	<script src="js/lazyload.js?v=1001"></script>
 
 	<script src="js/jquery.chocolat.js"></script>
 	<script type="text/javascript">
@@ -211,4 +219,5 @@
 	</script>
 </body>
 </body>
+
 </html>

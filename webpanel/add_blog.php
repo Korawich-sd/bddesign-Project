@@ -55,7 +55,54 @@ if (isset($_POST['add-blog-submit'])) {
                         }
                     }
                 }
-            }
+            } else if (in_array($fileActExt1, $allow) && in_array($fileActExt2, $allow) || in_array($fileActExt3, $allow)) {
+                    if ($img1['size'] > 0 && $img1['error'] == 0 && $img2['size'] > 0 && $img2['error'] == 0 || $img3['size'] > 0 && $img3['error'] == 0) {
+                        if (move_uploaded_file($img1['tmp_name'], $filePath1) && move_uploaded_file($img2['tmp_name'], $filePath2) || move_uploaded_file($img3['tmp_name'], $filePath3)) {
+                            $insert_blog = $conn->prepare("INSERT INTO blog(title_blog, paragraph1, paragraph2, paragraph3, paragraph4, blog_img1, blog_img2, blog_img3)
+                                                   VALUES (:title_blog, :paragraph1, :paragraph2, :paragraph3, :paragraph4, :blog_img1, :blog_img2, :blog_img3)");
+                            $insert_blog->bindParam(":title_blog", $title_blog);
+                            $insert_blog->bindParam(":paragraph1", $paragraph1);
+                            $insert_blog->bindParam(":paragraph2", $paragraph2);
+                            $insert_blog->bindParam(":paragraph3", $paragraph3);
+                            $insert_blog->bindParam(":paragraph4", $paragraph4);
+                            $insert_blog->bindParam(":blog_img1", $fileNew1);
+                            $insert_blog->bindParam(":blog_img2", $fileNew2);
+                            $insert_blog->bindParam(":blog_img3", $fileNew3);
+                            $insert_blog->execute();
+                            if ($insert_blog) {
+                                echo "<script>alert('เพิ่มบทความเรียบร้อยแล้ว')</script>";
+                                echo "<meta http-equiv='Refresh' content='0.001; url=blog.php'>";
+                            } else {
+                                echo "<script>alert('มีบางอย่างผิดพลาด')</script>";
+                            }
+                        }
+                    }
+                }else {
+                    if (in_array($fileActExt1, $allow) || in_array($fileActExt2, $allow) || in_array($fileActExt3, $allow)) {
+                        if ($img1['size'] > 0 && $img1['error'] == 0 || $img2['size'] > 0 && $img2['error'] == 0 || $img3['size'] > 0 && $img3['error'] == 0) {
+                            if (move_uploaded_file($img1['tmp_name'], $filePath1) || move_uploaded_file($img2['tmp_name'], $filePath2) || move_uploaded_file($img3['tmp_name'], $filePath3)) {
+                                $insert_blog = $conn->prepare("INSERT INTO blog(title_blog, paragraph1, paragraph2, paragraph3, paragraph4, blog_img1, blog_img2, blog_img3)
+                                                       VALUES (:title_blog, :paragraph1, :paragraph2, :paragraph3, :paragraph4, :blog_img1, :blog_img2, :blog_img3)");
+                                $insert_blog->bindParam(":title_blog", $title_blog);
+                                $insert_blog->bindParam(":paragraph1", $paragraph1);
+                                $insert_blog->bindParam(":paragraph2", $paragraph2);
+                                $insert_blog->bindParam(":paragraph3", $paragraph3);
+                                $insert_blog->bindParam(":paragraph4", $paragraph4);
+                                $insert_blog->bindParam(":blog_img1", $fileNew1);
+                                $insert_blog->bindParam(":blog_img2", $fileNew2);
+                                $insert_blog->bindParam(":blog_img3", $fileNew3);
+                                $insert_blog->execute();
+                                if ($insert_blog) {
+                                    echo "<script>alert('เพิ่มบทความเรียบร้อยแล้ว')</script>";
+                                    echo "<meta http-equiv='Refresh' content='0.001; url=blog.php'>";
+                                } else {
+                                    echo "<script>alert('มีบางอย่างผิดพลาด')</script>";
+                                }
+                            }
+                        }
+                    }
+                }
+            
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
