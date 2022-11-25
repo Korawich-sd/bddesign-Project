@@ -1,0 +1,42 @@
+.layout-pages {
+    width: 100%;
+    background-color: #FFFFFF;
+    margin: 25px;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 2px 2px 4px 3px rgba(0, 0, 0, 0.08);
+}
+
+.add-blog {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.box-title {
+    width: 100%;
+    height: fit-content;
+    margin: 10px;
+
+}
+
+.btn-add-blog {
+    width: 120px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    color: #FFFFFF;
+    background-color: #696cff;
+    cursor: pointer;
+}
+
+.btn-add-blog:hover {
+    background-color: #484aa7;
+    cursor: pointer;
+}
