@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="desktop">
+
 <head>
 
 	<link rel="shortcut icon" href="images/favicon.ico">
@@ -18,7 +19,7 @@
 	<link rel="stylesheet" type="text/css" href="css/fontello.css?v=1001">
 	<link href="css/spinner.css?v=1001" rel="stylesheet">
 	<!-- CSS only -->
-	<link href="css/bootstrap.min.css?v=1001" rel="stylesheet" >
+	<link href="css/bootstrap.min.css?v=1001" rel="stylesheet">
 
 	<link rel="stylesheet" href="css/coreNavigation.css?v=1001" />
 	<link rel="stylesheet" href="css/typography.css?v=1001" />
@@ -36,9 +37,20 @@
 	<link href="css/slick-custom.css?v=1001" rel="stylesheet">
 
 </head>
+<?php
+require_once('config/bddesign_db.php');
+
+$blog = $conn->prepare("SELECT * FROM blog");
+$blog->execute();
+$row_blog = $blog->fetchAll();
+
+
+
+?>
+
 <body>
 	<main>
-		<?php include("header.php");?>
+		<?php include("header.php"); ?>
 		<div class="slider">
 			<div class="ps-0 pe-0">
 				<div class="item-slide">
@@ -46,34 +58,32 @@
 						<img class="img-fluid w-100" src="upload/page.webp">
 					</div>
 				</div>
-			</div>    
+			</div>
 		</div>
 		<section id="page-section">
 			<div class="container-xxl">
-				<?php include("navigator.php");?>
+				<?php include("navigator.php"); ?>
 				<div class="text-center mb-5">
 					<div class="page-header ">
 						<h2>บทความ</h2>
 					</div>
 				</div>
 				<div class="row">
-					<?php for($ii=1;$ii<=3;$ii++){ ?> 
-					<?php for($i=1;$i<=3;$i++){ ?> 
+
+					<?php foreach ($row_blog as $row_blog) { ?>
+
 						<div class="col-md-6 col-lg-4">
 							<a href="blog-detail.php" class="item-blog">
 								<div class="blog-img">
-									<img class="lazy img-fluid" data-src="upload/blog0<?=$i?>.webp" alt="Monarch, khao-tao">
+									<img class="las-img" width="416px" height="312px" src="webpanel/assets/blog_upload/<?=$row_blog['blog_img1'] ?>" alt="Monarch, khao-tao">
 								</div>
 								<div class="blog-text">
-									<h4>7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ</h4>
-									<p>นอกจากจะมีบ้านที่สวยแล้ว การเลือกพื้นบ้าน ก็เป็นสิ่งสำคัญ
-										แถมยังจะช่วยทำให้บ้านดูมีเสน่ห์ สวยงาม สะดุดตา ปัจจุบัน
-										วัสดุที่ใช้ในการปูพื้นมีอยู่หลายชนิดหลายแบบให้เลือกใช้ ซึ่ง
-									แต่ละชนิดมีคุณสมบัติที่แตกต่างกันออกไป...</p>
+									<h4><?=$row_blog['title_blog'] ?></h4>
+									<p><?=$row_blog['paragraph1'] ?></p>
 
 									<div class="row">
 										<div class="col-6 text-start">
-											02/05/2555
+											<?= $row_blog['created_blog'] ?>
 										</div>
 										<div class="col-6 text-end">
 											อ่านทั้งหมด >>
@@ -83,55 +93,48 @@
 							</a>
 						</div>
 					<?php } ?>
-					<?php } ?>
-
-
-
 
 
 				</div>
-
-
-
-     <ul class="pagination justify-content-center mt-5">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span class="material-icons">keyboard_double_arrow_left</span>ก่อนหน้า</a>
-          </li>
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">ถัดไป <span class="material-icons">keyboard_double_arrow_right</span></a>
-          </li>
-        </ul>
+				<ul class="pagination justify-content-center mt-5">
+					<li class="page-item disabled">
+						<a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span class="material-icons">keyboard_double_arrow_left</span>ก่อนหน้า</a>
+					</li>
+					<li class="page-item active"><a class="page-link" href="#">1</a></li>
+					<li class="page-item"><a class="page-link" href="#">2</a></li>
+					<li class="page-item"><a class="page-link" href="#">3</a></li>
+					<li class="page-item">
+						<a class="page-link" href="#">ถัดไป <span class="material-icons">keyboard_double_arrow_right</span></a>
+					</li>
+				</ul>
 
 
 
 
-				</div>
-			</section>
+			</div>
+		</section>
 
 
 
 
 
 
-		</main>
+	</main>
 
 
 
 
 
-		<?php include("footer.php");?>
+	<?php include("footer.php"); ?>
 
 
-		<script src="js/bootstrap.bundle.min.js?v=1001"></script>
-		<script src="js/jquery.min.js?v=1001"></script>
-		<script src="js/coreNavigation.js?v=1001"></script>
-		<script>
-			$('nav').coreNavigation({
-				menuPosition: "center", 
-				container: true,
+	<script src="js/bootstrap.bundle.min.js?v=1001"></script>
+	<script src="js/jquery.min.js?v=1001"></script>
+	<script src="js/coreNavigation.js?v=1001"></script>
+	<script>
+		$('nav').coreNavigation({
+			menuPosition: "center",
+			container: true,
 			responsideSlide: true, // true or false
 			mode: 'sticky',
 			onStartSticky: function() {
@@ -152,13 +155,12 @@
 	</script>
 
 	<script type="text/javascript">
-
-		'use strict'; 
-		var $window = $(window); 
+		'use strict';
+		var $window = $(window);
 		$window.on({
-			'load': function () {
+			'load': function() {
 
-				/* Preloader */ 
+				/* Preloader */
 				$('.spinner').fadeOut(1500);
 
 
@@ -166,7 +168,6 @@
 			},
 
 		});
-
 	</script>
 
 
@@ -175,8 +176,6 @@
 
 
 	<script type="text/javascript">
-
-
 		$(document).ready(function() {
 			$("a#list").click(function() {
 				var list_y = $(this).attr("data-test");
@@ -195,7 +194,7 @@
 	<!-- Template Functions -->
 	<script src="js/functions.js?v=1001"></script>
 
-	<script  src="js/lazyload.js?v=1001"></script>
+	<!-- <script src="js/lazyload.js?v=1001"></script> -->
 
 	<script src="js/jquery.chocolat.js"></script>
 	<script type="text/javascript">
@@ -207,4 +206,5 @@
 	</script>
 </body>
 </body>
+
 </html>

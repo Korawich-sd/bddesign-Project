@@ -7,6 +7,7 @@
 
 #blog-section .box-head img{
    width: 70px;
+
 }
 
 
@@ -18,6 +19,7 @@
 
 .item-blog{
   position: relative;
+
   display: block;
   background: #ffffff;
   margin-bottom: 30px;
@@ -38,7 +40,10 @@
     font-size: 20px;
 }
 
-
+.las-img{
+    width: 416px;
+    height: 312px;
+}
 
 
 
@@ -59,9 +64,6 @@
     #blog-section .box-head img {
         width: 170px;
     }
-
-
-
 
 
 }
