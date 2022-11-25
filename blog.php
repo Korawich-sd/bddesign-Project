@@ -17,6 +17,7 @@
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300;400;500;600;700;800;900&display=swap">
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp">
 	<link rel="stylesheet" type="text/css" href="css/fontello.css?v=1001">
+	<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 	<link href="css/spinner.css?v=1001" rel="stylesheet">
 	<!-- CSS only -->
 	<link href="css/bootstrap.min.css?v=1001" rel="stylesheet">
@@ -39,11 +40,23 @@
 </head>
 <?php
 require_once('config/bddesign_db.php');
+$page = $_GET['page'];
+$blog_count = $conn->prepare("SELECT * FROM blog ");
+$blog_count->execute();
+$count_blog = $blog_count->fetchAll();
 
-$blog = $conn->prepare("SELECT * FROM blog");
+
+$rows = 6;
+if($page == ""){
+	$page = 1;
+}
+$total_data = count($count_blog);
+$total_page = ceil($total_data / $rows);
+$start = ($page - 1) * $rows;
+
+$blog = $conn->prepare("SELECT * FROM blog LIMIT $start,6");
 $blog->execute();
 $row_blog = $blog->fetchAll();
-
 
 
 ?>
@@ -75,15 +88,20 @@ $row_blog = $blog->fetchAll();
 						<div class="col-md-6 col-lg-4">
 							<a href="blog-detail.php" class="item-blog">
 								<div class="blog-img">
-									<img class="las-img" width="416px" height="312px" src="webpanel/assets/blog_upload/<?=$row_blog['blog_img1'] ?>" alt="Monarch, khao-tao">
+									<img class="las-img" width="416px" height="312px" src="webpanel/assets/blog_upload/<?= $row_blog['blog_img1'] ?>" alt="Monarch, khao-tao">
 								</div>
 								<div class="blog-text">
-									<h4><?=$row_blog['title_blog'] ?></h4>
-									<p><?=$row_blog['paragraph1'] ?></p>
+									<h4><?= $row_blog['title_blog'] ?></h4>
+									<p><?= $row_blog['paragraph1'] ?></p>
 
 									<div class="row">
 										<div class="col-6 text-start">
-											<?= $row_blog['created_blog'] ?>
+											<?php
+											$dateTime = $row_blog['created_blog'];
+											$splitTime = explode(" ", $dateTime);
+											$date = $splitTime[0];
+											echo $date;
+											?>
 										</div>
 										<div class="col-6 text-end">
 											อ่านทั้งหมด >>
@@ -92,38 +110,32 @@ $row_blog = $blog->fetchAll();
 								</div>
 							</a>
 						</div>
-					<?php } ?>
+					<?php
+
+					} ?>
 
 
 				</div>
+
 				<ul class="pagination justify-content-center mt-5">
-					<li class="page-item disabled">
-						<a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span class="material-icons">keyboard_double_arrow_left</span>ก่อนหน้า</a>
+					<li <?php if($page==1){echo "class='page-item disabled'";} ?>  >
+						<a class="page-link previous-page" href="blog.php?page=<?= $page-1 ?>" aria-disabled="true"><span class="material-icons">keyboard_double_arrow_left</span>ก่อนหน้า</a>
 					</li>
-					<li class="page-item active"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item">
-						<a class="page-link" href="#">ถัดไป <span class="material-icons">keyboard_double_arrow_right</span></a>
+					<?php
+					for ($i = 1; $i <= $total_page; $i++) { ?>
+						<li <?php if($page==$i){echo "class='page-item active'";} ?> ><a class="page-link" href="blog.php?page=<?= $i ?>"><?= $i ?></a></li>
+					<?php }
+					?>
+
+					<li <?php if($page==$total_page){echo "class='page-item disabled'";} ?> >
+						<a class="page-link nextpage" href="blog.php?page=<?= $page+1 ?>">ถัดไป <span class="material-icons">keyboard_double_arrow_right</span></a>
 					</li>
+
 				</ul>
-
-
-
 
 			</div>
 		</section>
-
-
-
-
-
-
 	</main>
-
-
-
-
 
 	<?php include("footer.php"); ?>
 
@@ -169,7 +181,6 @@ $row_blog = $blog->fetchAll();
 
 		});
 	</script>
-
 
 	<script type="text/javascript" src="js/slick.min.js?v=1001"></script>
 	<script type="text/javascript" src="js/slick-custom.js?v=1001"></script>
