@@ -23,6 +23,7 @@ if (isset($_SESSION['admin_login'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="adimage/logo_bd.png" />
@@ -56,7 +57,6 @@ if (isset($_SESSION['admin_login'])) {
 
 
 </head>
-
 <body style="font-family: 'Kanit', sans-serif;">
 
 
@@ -85,7 +85,8 @@ if (isset($_SESSION['admin_login'])) {
                 <ul class="menu-inner py-1">
 
                     <!-- Dashboard -->
-                    <li class="menu-item active">
+                    
+                    <li class="menu-item " id="home">
                         <a href="index.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">หน้าหลัก</div>
@@ -93,27 +94,15 @@ if (isset($_SESSION['admin_login'])) {
                     </li>
 
                     <!-- Performance -->
-                    <li class="menu-item">
-                        <a href="" class="menu-link menu-toggle">
+                    <li class="menu-item  " id="portfolio">
+                        <a href="portfolio.php" class="menu-link ">
                             <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
                             <div>ผลงาน</div>
                         </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="portfolio.php" class="menu-link">
-                                    <div>ผลงานทั้งหมด</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="add_portfolio.php" class="menu-link">
-                                    <div>เพิ่มผลงาน</div>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
 
                     <!-- Aticle -->
-                    <li class="menu-item ">
+                    <li class="menu-item " id="blog">
                         <a href="blog.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="blog">บทความ</div>
@@ -121,18 +110,11 @@ if (isset($_SESSION['admin_login'])) {
                     </li>
 
                     <!-- About -->
-                    <li class="menu-item">
-                        <a href="" class="menu-link menu-toggle">
+                    <li class="menu-item " id="aboutme">
+                        <a href="contact.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-box"></i>
                             <div>ติดต่อเรา</div>
                         </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="contact.php" class="menu-link">
-                                    <div>รายการติดต่อ</div>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
                 </ul>
             </aside>
@@ -250,6 +232,10 @@ if (isset($_SESSION['admin_login'])) {
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script>
+       
+    </script>
 </body>
 
 </html>
