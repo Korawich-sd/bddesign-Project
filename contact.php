@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="desktop">
+
 <head>
 
 	<link rel="shortcut icon" href="images/favicon.ico">
@@ -21,7 +22,7 @@
 	<link rel="stylesheet" type="text/css" href="css/fontello.css?v=1001">
 	<link href="css/spinner.css?v=1001" rel="stylesheet">
 	<!-- CSS only -->
-	<link href="css/bootstrap.min.css?v=1001" rel="stylesheet" >
+	<link href="css/bootstrap.min.css?v=1001" rel="stylesheet">
 
 	<link rel="stylesheet" href="css/coreNavigation.css?v=1001" />
 	<link rel="stylesheet" href="css/typography.css?v=1001" />
@@ -39,13 +40,61 @@
 	<link href="css/slick-custom.css?v=1001" rel="stylesheet">
 
 </head>
+<?php
+require_once('config/bddesign_db.php');
+
+if(isset($_POST['submit_contact'])){
+	$title_name = $_POST['title_name'];
+	$name = $_POST['name'];
+	$email = $_POST['email'];
+	$tel = $_POST['tel'];
+	$content = $_POST['content'];
+
+	if(empty($title_name)){
+		echo '<script>alert("กรุณากรอกชื่อเรื่อง")</script>';
+	}else if(empty($name)){
+		echo '<script>alert("กรุณากรอกชื่อ)</script>';
+	}else if(empty($email)){
+		echo '<script>alert("กรุณากรอกอีเมล")</script>';
+	}else if(empty($tel)){
+		echo '<script>alert("กรุณากรอกโทรศัพท์")</script>';
+	}else if(empty($content)){
+		echo '<script>alert("กรุณาเขียนข้อความ")</script>';
+	}else {
+		try{
+			$send_data = $conn->prepare("INSERT INTO message(title_name, name, email, tel, content)
+										VALUES(:title_name, :name, :email, :tel, :content)");
+			$send_data->bindParam(":title_name",$title_name);
+			$send_data->bindParam(":name",$name);
+			$send_data->bindParam(":email",$email);
+			$send_data->bindParam(":tel",$tel);
+			$send_data->bindParam(":content",$content);
+			$send_data->execute();
+
+			if($send_data){
+				echo '<script>alert("ส่งข้อมูลเรียบร้อยแล้ว")</script>';
+				echo "<meta http-equiv='Refresh' content='0.001; url=contact.php'>";
+			}else{
+				echo '<script>alert("มีบางอย่างผิดพลาด")</script>';
+				echo "<meta http-equiv='Refresh' content='0.001; url=contact.php'>";
+			}
+		}catch (PDOException $e){
+			echo $e->getMessage();
+		}
+	}
+	
+	
+
+}
+?>
+
 <body>
 	<main>
 
 
 
-		<?php include("header.php");?>
-		
+		<?php include("header.php"); ?>
+
 
 
 		<div class="slider">
@@ -64,7 +113,7 @@
 
 				</div>
 
-			</div>    
+			</div>
 
 
 
@@ -74,7 +123,7 @@
 		<section id="page-section">
 			<div class="container-xxl">
 
-				<?php include("navigator.php");?>
+				<?php include("navigator.php"); ?>
 				<div class="text-center mb-5">
 					<div class="page-header ">
 						<h2>ติดต่อเรา</h2>
@@ -91,9 +140,9 @@
 							<h4>Busines Development And Design</h4>
 							<ul>
 								<li class="mb-4">18/12 ซ.สุขุมวิท 22 ถ.สุขุมวิท แขวงคลองเตย<br>
-								คลองเตย กรุงเทพฯ 10110</li>
+									คลองเตย กรุงเทพฯ 10110</li>
 								<li>โทร +662-663-4056#16<br>
-								โทรสาร +662-663-4055</li>
+									โทรสาร +662-663-4055</li>
 								<li>Busines_design@gmail.com</li>
 							</ul>
 
@@ -113,56 +162,54 @@
 
 
 
-
-
-
-
-
-
-
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group mb-3">
-									<label for="inputName">ชื่อเรื่อง</label>
-									<input name="contact[name]" type="text" class="form-control rounded-0" id="inputName" placeholder="กรอกชื่อเรื่อง">
+						<form method="post">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group mb-3">
+										<label for="inputName">ชื่อเรื่อง</label>
+										<input  type="text" name="title_name" class="form-control rounded-0" id="inputName" placeholder="กรอกชื่อเรื่อง">
+									</div>
 								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group mb-3">
-									<label for="inputName">ชื่อ</label>
-									<input name="contact[name]" type="text" class="form-control rounded-0" id="inputName" placeholder="กรอกชื่อ">
+								<div class="col-md-6">
+									<div class="form-group mb-3">
+										<label for="inputName">ชื่อ</label>
+										<input  type="text" name="name" class="form-control rounded-0" id="inputName" placeholder="กรอกชื่อ">
+									</div>
 								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group mb-3">
-									<label for="inputEmail">อีเมล</label>
-									<input name="contact[email]" type="email" class="form-control rounded-0" id="inputEmail" placeholder="กรอกอีเมล">
+								<div class="col-md-6">
+									<div class="form-group mb-3">
+										<label for="inputEmail">อีเมล</label>
+										<input  type="email" name="email" class="form-control rounded-0" id="inputEmail" placeholder="กรอกอีเมล">
+									</div>
 								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group mb-3">
-									<label for="inputEmail">โทรศัพท์</label>
-									<input name="contact[phone]" type="tel" class="form-control rounded-0" id="inputEmail" placeholder="กรอกโทรศัพท์">
-								</div>
-							</div>
-
-							<div class="col-md-12">
-								<div class="form-group mb-3">
-									<label for="inputName">ข้อความ</label>
-									<textarea name="contact[body]" class="form-control rounded-0" rows="8" placeholder="เขียนข้อความของคุณที่นี่" id="textareaMessage"></textarea>
+								<div class="col-md-6">
+									<div class="form-group mb-3">
+										<label for="inputEmail">โทรศัพท์</label>
+										<input  type="tel" name="tel" class="form-control rounded-0" id="inputEmail" placeholder="กรอกโทรศัพท์">
+									</div>
 								</div>
 
+								<div class="col-md-12">
+									<div class="form-group mb-3">
+										<label for="inputName">ข้อความ</label>
+										<textarea name="content" class="form-control rounded-0" rows="8" placeholder="เขียนข้อความของคุณที่นี่" id="textareaMessage"></textarea>
+									</div>
+
+								</div>
+								<div class="col-md-12">
+									<div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="6LdnZCAbAAAAAN5rxRl9h09tA2OMjzo_NZxkCh3M">
+										<div style="width: 304px; height: 78px;">
+											<div><iframe title="reCAPTCHA" src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6LdnZCAbAAAAAN5rxRl9h09tA2OMjzo_NZxkCh3M&amp;co=aHR0cHM6Ly93d3cuZmlyZW1hbi1mYi5jb206NDQz&amp;hl=en&amp;v=ovmhLiigaw4D9ujHYlHcKKhP&amp;size=normal&amp;cb=9kj3f8sw2pix" width="304" height="78" role="presentation" name="a-4rb8zrm8qpsv" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea>
+										</div><iframe style="display: none;"></iframe>
+									</div>
+									<div class="clearfix mt-3"></div>
+
+									<button type="submit" name="submit_contact" class="btn btn btn-info btn-lg rounded-pill px-lg-5"><i class="icofont-send-mail"></i> ส่งข้อความ</button>
+									<a href="contact.php" class="btn btn btn-info btn-lg rounded-pill px-lg-5"><i class="icofont-refresh"></i> ล้างข้อมูล</a>
+								</div>
 							</div>
-							<div class="col-md-12">
-								<div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="6LdnZCAbAAAAAN5rxRl9h09tA2OMjzo_NZxkCh3M"><div style="width: 304px; height: 78px;"><div><iframe title="reCAPTCHA" src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6LdnZCAbAAAAAN5rxRl9h09tA2OMjzo_NZxkCh3M&amp;co=aHR0cHM6Ly93d3cuZmlyZW1hbi1mYi5jb206NDQz&amp;hl=en&amp;v=ovmhLiigaw4D9ujHYlHcKKhP&amp;size=normal&amp;cb=9kj3f8sw2pix" width="304" height="78" role="presentation" name="a-4rb8zrm8qpsv" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;"></iframe></div>
-								<div class="clearfix mt-3"></div>
 
-								<a href="" class="btn btn btn-info btn-lg rounded-pill px-lg-5"><i class="icofont-send-mail"></i> ส่งข้อความ</a>
-								<a href="" class="btn btn btn-info btn-lg rounded-pill px-lg-5"><i class="icofont-refresh"></i> ล้างข้อมูล</a>
-							</div>
-						</div>
-
-
+						</form>
 
 					</div>
 				</div>
@@ -175,7 +222,7 @@
 		</section>
 
 		<div class="ratio ratio-21x9">
-			<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15502.40809068953!2d100.548076!3d13.7425281!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29edcf327b91b%3A0x5480f75fcf67cfdb!2sGoogle%20Thailand!5e0!3m2!1sth!2sth!4v1668162178077!5m2!1sth!2sth"  allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+			<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15502.40809068953!2d100.548076!3d13.7425281!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29edcf327b91b%3A0x5480f75fcf67cfdb!2sGoogle%20Thailand!5e0!3m2!1sth!2sth!4v1668162178077!5m2!1sth!2sth" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 		</div>
 
 
@@ -186,7 +233,7 @@
 
 
 
-	<?php include("footer.php");?>
+	<?php include("footer.php"); ?>
 
 
 	<script src="js/bootstrap.bundle.min.js?v=1001"></script>
@@ -194,7 +241,7 @@
 	<script src="js/coreNavigation.js?v=1001"></script>
 	<script>
 		$('nav').coreNavigation({
-			menuPosition: "center", 
+			menuPosition: "center",
 			container: true,
 			responsideSlide: true, // true or false
 			mode: 'sticky',
@@ -216,13 +263,12 @@
 	</script>
 
 	<script type="text/javascript">
-
-		'use strict'; 
-		var $window = $(window); 
+		'use strict';
+		var $window = $(window);
 		$window.on({
-			'load': function () {
+			'load': function() {
 
-				/* Preloader */ 
+				/* Preloader */
 				$('.spinner').fadeOut(1500);
 
 
@@ -230,7 +276,6 @@
 			},
 
 		});
-
 	</script>
 
 
@@ -239,8 +284,6 @@
 
 
 	<script type="text/javascript">
-
-
 		$(document).ready(function() {
 			$("a#list").click(function() {
 				var list_y = $(this).attr("data-test");
@@ -259,7 +302,7 @@
 	<!-- Template Functions -->
 	<script src="js/functions.js?v=1001"></script>
 
-	<script  src="js/lazyload.js?v=1001"></script>
+	<script src="js/lazyload.js?v=1001"></script>
 
 	<script src="js/jquery.chocolat.js"></script>
 	<script type="text/javascript">
@@ -271,4 +314,5 @@
 	</script>
 </body>
 </body>
+
 </html>

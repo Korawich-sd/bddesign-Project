@@ -1,5 +1,6 @@
 <?php
 require_once('config/bddesign_db.php');
+error_reporting(0);
 $page = $_GET['page'];
 
 if($page == ""){

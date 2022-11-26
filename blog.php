@@ -48,7 +48,7 @@ $count_blog = $blog_count->fetchAll();
 
 
 $rows = 6;
-if($page == ""){
+if ($page == "") {
 	$page = 1;
 }
 $total_data = count($count_blog);
@@ -61,6 +61,29 @@ $row_blog = $blog->fetchAll();
 
 
 ?>
+<style>
+	.las-img {
+		width: 458px;
+		height: 312px;
+	}
+
+
+	@media (max-width: 992px) {
+		.las-img {
+			width: 427px;
+			height: 312px;
+
+		}
+	}
+
+	@media screen and (min-width: 992px) {
+		.las-img {
+			width: 416px;
+			height: 312px;
+
+		}
+	}
+</style>
 
 <body>
 	<main>
@@ -87,9 +110,9 @@ $row_blog = $blog->fetchAll();
 					<?php foreach ($row_blog as $row_blog) { ?>
 
 						<div class="col-md-6 col-lg-4">
-							<a href="blog-detail.php?blog=<?=$row_blog['id'] ?>" class="item-blog">
+							<a href="blog-detail.php?blog=<?= $row_blog['id'] ?>" class="item-blog">
 								<div class="blog-img">
-									<img class="las-img" width="416px" height="312px" src="webpanel/assets/blog_upload/<?= $row_blog['blog_img1'] ?>" alt="Monarch, khao-tao">
+									<img class="las-img" width="458px" height="312px" src="webpanel/assets/blog_upload/<?= $row_blog['blog_img1'] ?>" alt="Monarch, khao-tao">
 								</div>
 								<div class="blog-text">
 									<h4><?= $row_blog['title_blog'] ?></h4>
@@ -119,17 +142,23 @@ $row_blog = $blog->fetchAll();
 				</div>
 
 				<ul class="pagination justify-content-center mt-5">
-					<li <?php if($page==1){echo "class='page-item disabled'";} ?>  >
-						<a class="page-link previous-page" href="blog.php?page=<?= $page-1 ?>" aria-disabled="true"><span class="material-icons">keyboard_double_arrow_left</span>ก่อนหน้า</a>
+					<li <?php if ($page == 1) {
+							echo "class='page-item disabled'";
+						} ?>>
+						<a class="page-link previous-page" href="blog.php?page=<?= $page - 1 ?>" aria-disabled="true"><span class="material-icons">keyboard_double_arrow_left</span>ก่อนหน้า</a>
 					</li>
 					<?php
 					for ($i = 1; $i <= $total_page; $i++) { ?>
-						<li <?php if($page==$i){echo "class='page-item active'";} ?> ><a class="page-link" href="blog.php?page=<?= $i ?>"><?= $i ?></a></li>
+						<li <?php if ($page == $i) {
+								echo "class='page-item active'";
+							} ?>><a class="page-link" href="blog.php?page=<?= $i ?>"><?= $i ?></a></li>
 					<?php }
 					?>
 
-					<li <?php if($page==$total_page){echo "class='page-item disabled'";} ?> >
-						<a class="page-link nextpage" href="blog.php?page=<?= $page+1 ?>">ถัดไป <span class="material-icons">keyboard_double_arrow_right</span></a>
+					<li <?php if ($page == $total_page) {
+							echo "class='page-item disabled'";
+						} ?>>
+						<a class="page-link nextpage" href="blog.php?page=<?= $page + 1 ?>">ถัดไป <span class="material-icons">keyboard_double_arrow_right</span></a>
 					</li>
 
 				</ul>
@@ -206,7 +235,7 @@ $row_blog = $blog->fetchAll();
 	<!-- Template Functions -->
 	<script src="js/functions.js?v=1001"></script>
 
-	<!-- <script src="js/lazyload.js?v=1001"></script> -->
+	<script src="js/lazyload.js?v=1001"></script>
 
 	<script src="js/jquery.chocolat.js"></script>
 	<script type="text/javascript">
