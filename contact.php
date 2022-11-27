@@ -43,6 +43,10 @@
 <?php
 require_once('config/bddesign_db.php');
 
+$data_about = $conn->prepare("SELECT * FROM aboutme");
+$data_about->execute();
+$row_about = $data_about->fetch();
+
 if(isset($_POST['submit_contact'])){
 	$title_name = $_POST['title_name'];
 	$name = $_POST['name'];
@@ -139,16 +143,16 @@ if(isset($_POST['submit_contact'])){
 						<div class="box-contact">
 							<h4>Busines Development And Design</h4>
 							<ul>
-								<li class="mb-4">18/12 ซ.สุขุมวิท 22 ถ.สุขุมวิท แขวงคลองเตย<br>
-									คลองเตย กรุงเทพฯ 10110</li>
-								<li>โทร +662-663-4056#16<br>
-									โทรสาร +662-663-4055</li>
-								<li>Busines_design@gmail.com</li>
+								<li class="mb-4"><?= $row_about["address"]?><br>
+									</li>
+								<li>โทร : <?= $row_about["tel1"]?><br>
+								โทรสาร : <?= $row_about["tel2"]?></li>
+								<li><?= $row_about["email"]?></li>
 							</ul>
 
 
 
-							<img class="lazy img-fluid" data-src="images/qr.webp" alt="ยกับเราทาง Line">
+							<img class="img-fluid" src="webpanel/assets/about_me/<?= $row_about['line_qr'] ?>" alt="ยกับเราทาง Line">
 
 							<h4 class="mt-4 mt-lg-0">คุยกับเราทาง Line<br>Line ID : Busines</h4>
 
