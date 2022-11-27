@@ -8,6 +8,12 @@ $about = $conn->prepare("SELECT * FROM aboutme");
 $about->execute();
 $row_about = $about->fetchAll();
 
+$about_en = $conn->prepare("SELECT * FROM aboutme_en");
+$about_en->execute();
+$row_about_en = $about_en->fetch(PDO::FETCH_ASSOC);
+
+
+/// message
 $page = $_GET['page'];
 $message_count = $conn->prepare("SELECT * FROM message");
 $message_count->execute();
@@ -39,6 +45,7 @@ if (isset($_GET['delete_message_id'])) {
     }
 }
 
+//แก้ไข
 if (isset($_POST['edit-aboutme'])) {
     $company_name = $_POST['company_name'];
     $address = $_POST['address'];
@@ -92,7 +99,59 @@ if (isset($_POST['edit-aboutme'])) {
         }
     }
 }
+if (isset($_POST['edit-aboutme-en'])) {
+    $company_name_en = $_POST['company_name_en'];
+    $address_en = $_POST['address_en'];
+    $tel1_en = $_POST['tel1_en'];
+    $tel2_en = $_POST['tel2_en'];
+    $email_en = $_POST['email_en'];
+    $line_qr_en = $_FILES['line_qr_en'];
+    $img_qr_en = $row_about_en['line_qr'];
 
+    $allow = array('jpg', 'jpeg', 'png', 'webp');
+    $extention1 = explode(".", $line_qr_en['name']); //เเยกชื่อกับนามสกุลไฟล์
+    $fileActExt1 = strtolower(end($extention1)); //แปลงนามสกุลไฟล์เป็นพิมพ์เล็ก
+    $fileNew1 = rand() . "." . $fileActExt1;
+    $filePath1 = "assets/about_me/" . $fileNew1;
+
+    if (in_array($fileActExt1, $allow)) {
+        if ($line_qr['size'] > 0 && $line_qr['error'] == 0) {
+            if (move_uploaded_file($line_qr_en['tmp_name'], $filePath1)) {
+                $update_me = $conn->prepare("UPDATE aboutme_en SET company_name = :company_name, address = :address, tel1 = :tel1, tel2 = :tel2, line_qr = :line_qr, email = :email");
+                $update_me->bindParam(":company_name", $company_name_en);
+                $update_me->bindParam(":address", $address_en);
+                $update_me->bindParam(":tel1", $tel1_en);
+                $update_me->bindParam(":tel2", $tel2_en);
+                $update_me->bindParam(":line_qr", $fileNew1);
+                $update_me->bindParam(":email", $email_en);
+                $update_me->execute();
+
+                if ($update_me) {
+                    echo "<script>alert('แก้ไขข้อมูลเรียบร้อยแล้ว')</script>";
+                    echo "<meta http-equiv='Refresh' content='0.001; url=contact.php'>";
+                } else {
+                    echo "<script>alert('มีบางอย่างผิดพลาด')</script>";
+                }
+            }
+        }
+    } else {
+        $update_me = $conn->prepare("UPDATE aboutme_en SET company_name = :company_name, address = :address, tel1 = :tel1, tel2 = :tel2, line_qr = :line_qr, email = :email");
+        $update_me->bindParam(":company_name", $company_name_en);
+        $update_me->bindParam(":address", $address_en);
+        $update_me->bindParam(":tel1", $tel1_en);
+        $update_me->bindParam(":tel2", $tel2_en);
+        $update_me->bindParam(":line_qr", $img_qr_en);
+        $update_me->bindParam(":email", $email_en);
+        $update_me->execute();
+
+        if ($update_me) {
+            echo "<script>alert('แก้ไขข้อมูลเรียบร้อยแล้ว')</script>";
+            echo "<meta http-equiv='Refresh' content='0.001; url=contact.php'>";
+        } else {
+            echo "<script>alert('มีบางอย่างผิดพลาด')</script>";
+        }
+    }
+}
 ?>
 
 <!-- Layout container -->
@@ -131,6 +190,14 @@ if (isset($_POST['edit-aboutme'])) {
                                 <td><?= $row_about['email']; ?></td>
                                 <td> <img width="80px" src="assets/about_me/<?= $row_about['line_qr']; ?>" alt="qr_code"></td>
                             </tr>
+                            <tr align="center">
+                                <td><?= $row_about_en['company_name']; ?></td>
+                                <td><?= $row_about_en['address']; ?></td>
+                                <td><?= $row_about_en['tel1'];  ?></td>
+                                <td><?= $row_about_en['tel2'];  ?></td>
+                                <td><?= $row_about_en['email']; ?></td>
+                                <td> <img width="80px" src="assets/about_me/<?= $row_about_en['line_qr']; ?>" alt="qr_code"></td>
+                            </tr>
                     <?php $i++;
                             }
                         }
@@ -139,9 +206,10 @@ if (isset($_POST['edit-aboutme'])) {
 
             </table>
         </div>
+        
         <div class="box-form" id="box-f">
             <div class="box-title">
-                <p class="contact-me">แก้ไขข้อมูล</p>
+                <p class="contact-me">แก้ไขข้อมูล (ภาษาไทย)</p>
             </div>
             <form method="POST" enctype="multipart/form-data">
                 <div class="box-edit-me">
@@ -166,6 +234,37 @@ if (isset($_POST['edit-aboutme'])) {
                     </div>
                     <div class="box-btn">
                         <button class="btn-add-blog" type="submit" name="edit-aboutme">บันทึก</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="box-form" id="box-f">
+            <div class="box-title">
+                <p class="contact-me">แก้ไขข้อมูล (ภาษาอังกฤษ)</p>
+            </div>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="box-edit-me">
+                    <div class="f-1"><span class="w-txt">ชื่อ</span>
+                        <input type="text" name="company_name_en" value="<?php echo $row_about_en["company_name"]; ?>" id="w-f" class="form-control">
+                        <span class="w-txt">ที่อยู่</span>
+                        <input type="text" name="address_en" value="<?php echo $row_about_en["address"]; ?>" id="w-f" class="form-control">
+
+                    </div>
+                    <div class="f-2">
+                        <span class="w-txt">โทร</span>
+                        <input type="text" name="tel1_en" value="<?php echo $row_about_en["tel1"]; ?>" id="w-f" class="form-control">
+                        <span class="w-txt">โทรสาร</span>
+                        <input type="text" name="tel2_en" value="<?php echo $row_about_en["tel2"]; ?>" id="w-f" class="form-control">
+
+                    </div>
+                    <div class="f-2"><span class="w-txt">อีเมล</span>
+                        <input type="text" name="email_en" value="<?php echo $row_about_en["email"]; ?>" id="w-f" class="form-control">
+                        <span class="w-txt">QR Code</span>
+                        <input type="file" name="line_qr_en" id="w-f" class="form-control">
+
+                    </div>
+                    <div class="box-btn">
+                        <button class="btn-add-blog" type="submit" name="edit-aboutme-en">บันทึก</button>
                     </div>
                 </div>
             </form>

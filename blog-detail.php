@@ -38,7 +38,24 @@
 </head>
 <?php
 require_once('config/bddesign_db.php');
-if (isset($_GET['blog'])) {
+session_start();
+$blog = $_GET['blog'];
+if (isset($_GET['blog']) && isset($_GET['lang'])) {
+	$blog = $_GET['blog'];
+	$lang = $_GET['lang'];
+
+	if ($lang == "en") {
+		$blog_detail = $conn->prepare("SELECT * FROM blog_en WHERE id = :id");
+		$blog_detail->bindParam(":id", $blog);
+		$blog_detail->execute();
+		$detail_blog = $blog_detail->fetch(PDO::FETCH_ASSOC);
+	} else {
+		$blog_detail = $conn->prepare("SELECT * FROM blog WHERE id = :id");
+		$blog_detail->bindParam(":id", $blog);
+		$blog_detail->execute();
+		$detail_blog = $blog_detail->fetch(PDO::FETCH_ASSOC);
+	}
+} else if (isset($_GET['blog'])) {
 	$blog = $_GET['blog'];
 	$blog_detail = $conn->prepare("SELECT * FROM blog WHERE id = :id");
 	$blog_detail->bindParam(":id", $blog);
@@ -54,7 +71,114 @@ if (isset($_GET['blog'])) {
 
 <body>
 	<main>
-		<?php include("header.php"); ?>
+		<?php if (!isset($_SESSION)) {
+			session_start();
+		}   ?>
+		<header>
+			<!-- Start Navigation -->
+			<nav hidden>
+				<div class="nav-header">
+					<a href="index.php" <?php unset($_SESSION['lang']); ?> class="brand" title="รับเหมา ระบบไฟฟ้าอาคาร ระบบสุขาภิบาล ระบบปรับอากาศ ระบบดับเพลง  ระบบไฟฟ้า"><img src="images/logo.webp" /></a>
+					<button class="toggle-bar">
+						<span class="material-icons-outlined">
+							menu
+						</span>
+						เมนู
+					</button>
+				</div>
+				<ul class="menu">
+					<li><a href="index.php"><?php if (isset($_GET['lang'])) {
+												if ($_GET['lang'] == "en") {
+													echo "Home";
+												} else {
+													echo "หน้าแรก";
+												}
+											} else {
+
+												echo "หน้าแรก";
+											} ?></a></li>
+					<li><a href="portfolio.php"><?php if (isset($_GET['lang'])) {
+													if ($_GET['lang'] == "en") {
+														echo "Portfolio";
+													} else {
+														echo "ผลงาน";
+													}
+												} else {
+
+													echo "ผลงาน";
+												} ?></a></li>
+					<li><a href="service.php"><?php if (isset($_GET['lang'])) {
+													if ($_GET['lang'] == "en") {
+														echo "Service";
+													} else {
+														echo "บริการ";
+													}
+												} else {
+
+													echo "บริการ";
+												} ?></a></li>
+					<li><a href="blog.php"><?php if (isset($_GET['lang'])) {
+												if ($_GET['lang'] == "en") {
+													echo "Blog";
+												} else {
+													echo "บทความ";
+												}
+											} else {
+
+												echo "บทความ";
+											} ?></a></li>
+					<li><a href="about.php"><?php if (isset($_GET['lang'])) {
+												if ($_GET['lang'] == "en") {
+													echo "About Me";
+												} else {
+													echo "เกี่ยวกับเรา";
+												}
+											} else {
+												echo "เกี่ยวกับเรา";
+											} ?></a></li>
+					<li><a href="contact.php"><?php if (isset($_GET['lang'])) {
+													if ($_GET['lang'] == "en") {
+														echo "Contact";
+													} else {
+														echo "ติดต่อเรา";
+													}
+												} else {
+													echo "ติดต่อเรา";
+												} ?></a></li>
+
+				</ul>
+				<ul class="attributes">
+					<li><a href="?blog=<?php echo $_GET['blog'] ?>&lang=th" <?php
+											if (!isset($_GET['lang'])) {
+												echo "class='active'";
+											} else if (isset($_GET['lang'])) {
+												$lang = $_GET['lang'];
+												if ($lang == 'th') {
+													echo "class='active'";
+												} else {
+
+													echo "class='not_active'";
+												}
+											} ?>>
+							<img class="flag" src="images/thailand.webp">
+						</a></li>
+					<li><a href="?blog=<?php echo $_GET['blog'] ?>&lang=en" <?php
+											if (!isset($_GET['lang'])) {
+												echo "class='not_active'";
+											} else if (isset($_GET['lang'])) {
+												$lang = $_GET['lang'];
+												if ($lang == 'en') {
+													echo "class='active'";
+												} else {
+
+													echo "class='not_active'";
+												}
+											} ?>><img class="flag" src="images/uk.webp"></a></li>
+
+				</ul>
+			</nav>
+			<!-- End Navigation -->
+		</header>
 
 		<div class="slider">
 			<div class="ps-0 pe-0">
@@ -103,7 +227,9 @@ if (isset($_GET['blog'])) {
 						<div class="view-seventh mb-4">
 							<a href="webpanel/assets/blog_upload/<?= $detail_blog["blog_img1"] ?>" class="b-link-stripe b-animate-go thickbox" title="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
 								<div class="box-gallery">
-									<div class="bg-img <?php if ($row_img1[1] == null) {echo 'img-none';} ?>">
+									<div class="bg-img <?php if ($row_img1[1] == null) {
+															echo 'img-none';
+														} ?>">
 										<img class="img-fluid" src="webpanel/assets/blog_upload/<?= $detail_blog["blog_img1"] ?>" alt="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
 									</div>
 
@@ -115,7 +241,9 @@ if (isset($_GET['blog'])) {
 						<div class="view-seventh mb-4">
 							<a href="webpanel/assets/blog_upload/<?= $detail_blog["blog_img2"] ?>" class="b-link-stripe b-animate-go thickbox" title="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
 								<div class="box-gallery">
-									<div class="bg-img <?php if ($row_img2[1] == null) {echo 'img-none';} ?>">															
+									<div class="bg-img <?php if ($row_img2[1] == null) {
+															echo 'img-none';
+														} ?>">
 										<img class="img-fluid" src="webpanel/assets/blog_upload/<?= $detail_blog["blog_img2"] ?>" alt="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
 									</div>
 
@@ -127,7 +255,9 @@ if (isset($_GET['blog'])) {
 						<div class="view-seventh mb-4">
 							<a href="webpanel/assets/blog_upload/<?= $detail_blog["blog_img3"] ?>" class="b-link-stripe b-animate-go thickbox" title="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
 								<div class="box-gallery">
-									<div class="bg-img <?php if ($row_img3[1] == null) {echo 'img-none';} ?>">
+									<div class="bg-img <?php if ($row_img3[1] == null) {
+															echo 'img-none';
+														} ?>">
 										<img class="img-fluid" src="webpanel/assets/blog_upload/<?= $detail_blog["blog_img3"] ?>" alt="7 วัสดุปูพื้นเลือกยังไงให้เหมาะกับบ้านคุณ">
 									</div>
 

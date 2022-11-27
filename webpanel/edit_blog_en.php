@@ -6,7 +6,7 @@ $blog_id;
 
 if (isset($_GET['blog_id'])) {
     $blog_id = $_GET['blog_id'];
-    $data_blog = $conn->prepare("SELECT * FROM blog WHERE id = :id");
+    $data_blog = $conn->prepare("SELECT * FROM blog_en WHERE id = :id");
     $data_blog->bindParam(":id", $blog_id);
     $data_blog->execute();
     $row_data_blog = $data_blog->fetch(PDO::FETCH_ASSOC);
@@ -48,7 +48,7 @@ if (isset($_POST['edit-blog'])) {
             if (in_array($fileActExt1, $allow) && in_array($fileActExt2, $allow) && in_array($fileActExt3, $allow)) {
                 if ($img1['size'] > 0 && $img1['error'] == 0 && $img2['size'] > 0 && $img2['error'] == 0 && $img3['size'] > 0 && $img3['error'] == 0) {
                     if (move_uploaded_file($img1['tmp_name'], $filePath1) && move_uploaded_file($img2['tmp_name'], $filePath2) && move_uploaded_file($img3['tmp_name'], $filePath3)) {
-                        $insert_blog = $conn->prepare("UPDATE blog SET title_blog = :title_blog, paragraph1 = :paragraph1,
+                        $insert_blog = $conn->prepare("UPDATE blog_en SET title_blog = :title_blog, paragraph1 = :paragraph1,
                                                  paragraph2 = :paragraph2, paragraph3 = :paragraph3, paragraph4 = :paragraph4,
                                                   blog_img1 = :blog_img1, blog_img2 = :blog_img2, blog_img3 = :blog_img3 WHERE id = :id");
 
@@ -71,7 +71,7 @@ if (isset($_POST['edit-blog'])) {
                     }
                 }
             } else {
-                $insert_blog = $conn->prepare("UPDATE blog SET title_blog = :title_blog, paragraph1 = :paragraph1,
+                $insert_blog = $conn->prepare("UPDATE blog_en SET title_blog = :title_blog, paragraph1 = :paragraph1,
                 paragraph2 = :paragraph2, paragraph3 = :paragraph3, paragraph4 = :paragraph4,
                  blog_img1 = :blog_img1, blog_img2 = :blog_img2, blog_img3 = :blog_img3 WHERE id = :id");
 
@@ -104,7 +104,7 @@ if (isset($_POST['edit-blog'])) {
     <aside id="layout-menus" class="layout-menu menu-vertical menu bg-menu-theme"></aside>
     <div class="layout-pages">
         <div class="box-title">
-            <p class="add-blog">เเก้ไขบทความ (ภาษาไทย)</p>
+            <p class="add-blog">เเก้ไขบทความ (ภาษาอังกฤษ)</p>
         </div>
         <?php
         if (isset($errorMsg)) { ?>

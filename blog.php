@@ -41,25 +41,67 @@
 <?php
 require_once('config/bddesign_db.php');
 error_reporting(0);
-$page = $_GET['page'];
-$blog_count = $conn->prepare("SELECT * FROM blog ");
-$blog_count->execute();
-$count_blog = $blog_count->fetchAll();
+session_start();
+$_SESSION['lang'] = "";
+if (isset($_GET['lang']) && $_GET['lang'] != "") {
+	$_SESSION['lang'] = $_GET['lang'];
+
+	if ($_SESSION['lang'] == "en") {
+		$page = $_GET['page'];
+		$blog_count = $conn->prepare("SELECT * FROM blog_en");
+		$blog_count->execute();
+		$count_blog = $blog_count->fetchAll();
+
+		$rows = 6;
+		if ($page == "") {
+			$page = 1;
+		}
+		$total_data = count($count_blog);
+		$total_page = ceil($total_data / $rows);
+		$start = ($page - 1) * $rows;
+
+		$blog = $conn->prepare("SELECT * FROM blog_en LIMIT $start,6");
+		$blog->execute();
+		$row_blog = $blog->fetchAll();
+	} else {
+		$page = $_GET['page'];
+		$blog_count = $conn->prepare("SELECT * FROM blog ");
+		$blog_count->execute();
+		$count_blog = $blog_count->fetchAll();
 
 
-$rows = 6;
-if ($page == "") {
-	$page = 1;
+		$rows = 6;
+		if ($page == "") {
+			$page = 1;
+		}
+		$total_data = count($count_blog);
+		$total_page = ceil($total_data / $rows);
+		$start = ($page - 1) * $rows;
+
+		$blog = $conn->prepare("SELECT * FROM blog LIMIT $start,6");
+		$blog->execute();
+		$row_blog = $blog->fetchAll();
+	}
+} else {
+
+	$page = $_GET['page'];
+	$blog_count = $conn->prepare("SELECT * FROM blog ");
+	$blog_count->execute();
+	$count_blog = $blog_count->fetchAll();
+
+
+	$rows = 6;
+	if ($page == "") {
+		$page = 1;
+	}
+	$total_data = count($count_blog);
+	$total_page = ceil($total_data / $rows);
+	$start = ($page - 1) * $rows;
+
+	$blog = $conn->prepare("SELECT * FROM blog LIMIT $start,6");
+	$blog->execute();
+	$row_blog = $blog->fetchAll();
 }
-$total_data = count($count_blog);
-$total_page = ceil($total_data / $rows);
-$start = ($page - 1) * $rows;
-
-$blog = $conn->prepare("SELECT * FROM blog LIMIT $start,6");
-$blog->execute();
-$row_blog = $blog->fetchAll();
-
-
 ?>
 <style>
 	.las-img {
@@ -102,7 +144,13 @@ $row_blog = $blog->fetchAll();
 				<?php include("navigator.php"); ?>
 				<div class="text-center mb-5">
 					<div class="page-header ">
-						<h2>บทความ</h2>
+						<h2><?php
+							if ($lang == 'en') {
+								echo "Blog";
+							} else {
+								echo "บทความ";
+							}
+							?></h2>
 					</div>
 				</div>
 				<div class="row">
@@ -110,7 +158,8 @@ $row_blog = $blog->fetchAll();
 					<?php foreach ($row_blog as $row_blog) { ?>
 
 						<div class="col-md-6 col-lg-4">
-							<a href="blog-detail.php?blog=<?= $row_blog['id'] ?>" class="item-blog">
+							<a href="blog-detail.php?blog=<?php echo $row_blog['id']; ?><?php if(isset($_GET['lang'])){$dt=$_GET['lang']; if($dt =="en"){echo "&lang=en";}
+						else{echo "";}}else{echo "";} ?>" class="item-blog">
 								<div class="blog-img">
 									<img class="las-img" width="458px" height="312px" src="webpanel/assets/blog_upload/<?= $row_blog['blog_img1'] ?>" alt="Monarch, khao-tao">
 								</div>
@@ -128,7 +177,7 @@ $row_blog = $blog->fetchAll();
 											?>
 										</div>
 										<div class="col-6 text-end">
-											อ่านทั้งหมด >>
+											<?php if(isset($_GET['lang'])){$ll = $_GET['lang']; if($ll == "en"){echo "Read All";}else{echo "อ่านทั้งหมด";} }else{echo "อ่านทั้งหมด";} ?> >>
 										</div>
 									</div>
 								</div>
@@ -145,20 +194,45 @@ $row_blog = $blog->fetchAll();
 					<li <?php if ($page == 1) {
 							echo "class='page-item disabled'";
 						} ?>>
-						<a class="page-link previous-page" href="blog.php?page=<?= $page - 1 ?>" aria-disabled="true"><span class="material-icons">keyboard_double_arrow_left</span>ก่อนหน้า</a>
+						<a class="page-link previous-page" href="blog.php?page=<?= $page - 1 ?>" aria-disabled="true"><span class="material-icons">keyboard_double_arrow_left</span><?php if ($_GET['lang'] == "en") {
+																																														echo "Previous";
+																																													} else {
+																																														echo "ก่อนหน้า";
+																																													} ?></a>
 					</li>
 					<?php
 					for ($i = 1; $i <= $total_page; $i++) { ?>
 						<li <?php if ($page == $i) {
 								echo "class='page-item active'";
-							} ?>><a class="page-link" href="blog.php?page=<?= $i ?>"><?= $i ?></a></li>
+							} ?>><a class="page-link" href="blog.php?page=<?= $i ?><?php if (isset($_GET['lang'])) {
+								$la = $_GET['lang'];
+								if ($la == "en") {
+									echo "&lang=en";
+								}
+							} else {
+								echo "";
+							}
+							?>"><?= $i ?></a></li>
 					<?php }
 					?>
 
 					<li <?php if ($page == $total_page) {
 							echo "class='page-item disabled'";
 						} ?>>
-						<a class="page-link nextpage" href="blog.php?page=<?= $page + 1 ?>">ถัดไป <span class="material-icons">keyboard_double_arrow_right</span></a>
+						<a class="page-link nextpage" href="blog.php?page=<?= $page + 1 ?>
+						<?php if (isset($_GET['lang'])) {
+							$la = $_GET['lang'];
+							if ($la == "en") {
+								echo "&lang=en";
+							}
+						} else {
+							echo "";
+						}
+						?>"><?php if ($_GET['lang'] == "en") {
+									echo "Next";
+								} else {
+									echo "ถัดไป";
+								} ?> <span class="material-icons">keyboard_double_arrow_right</span></a>
 					</li>
 
 				</ul>

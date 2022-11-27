@@ -42,53 +42,66 @@
 </head>
 <?php
 require_once('config/bddesign_db.php');
+session_start();
 
-$data_about = $conn->prepare("SELECT * FROM aboutme");
-$data_about->execute();
-$row_about = $data_about->fetch();
+if (isset($_GET['lang'])) {
+	$lang = $_GET['lang'];
+	if ($lang == "en") {
+		$data_about = $conn->prepare("SELECT * FROM aboutme_en");
+		$data_about->execute();
+		$row_about = $data_about->fetch();
+	} else {
+		$data_about = $conn->prepare("SELECT * FROM aboutme");
+		$data_about->execute();
+		$row_about = $data_about->fetch();
+	}
+} else {
+	$data_about = $conn->prepare("SELECT * FROM aboutme");
+	$data_about->execute();
+	$row_about = $data_about->fetch();
+}
 
-if(isset($_POST['submit_contact'])){
+
+
+if (isset($_POST['submit_contact'])) {
 	$title_name = $_POST['title_name'];
 	$name = $_POST['name'];
 	$email = $_POST['email'];
 	$tel = $_POST['tel'];
 	$content = $_POST['content'];
 
-	if(empty($title_name)){
+	if (empty($title_name)) {
 		echo '<script>alert("กรุณากรอกชื่อเรื่อง")</script>';
-	}else if(empty($name)){
+	} else if (empty($name)) {
 		echo '<script>alert("กรุณากรอกชื่อ)</script>';
-	}else if(empty($email)){
+	} else if (empty($email)) {
 		echo '<script>alert("กรุณากรอกอีเมล")</script>';
-	}else if(empty($tel)){
+	} else if (empty($tel)) {
 		echo '<script>alert("กรุณากรอกโทรศัพท์")</script>';
-	}else if(empty($content)){
+	} else if (empty($content)) {
 		echo '<script>alert("กรุณาเขียนข้อความ")</script>';
-	}else {
-		try{
+	} else {
+		try {
 			$send_data = $conn->prepare("INSERT INTO message(title_name, name, email, tel, content)
 										VALUES(:title_name, :name, :email, :tel, :content)");
-			$send_data->bindParam(":title_name",$title_name);
-			$send_data->bindParam(":name",$name);
-			$send_data->bindParam(":email",$email);
-			$send_data->bindParam(":tel",$tel);
-			$send_data->bindParam(":content",$content);
+			$send_data->bindParam(":title_name", $title_name);
+			$send_data->bindParam(":name", $name);
+			$send_data->bindParam(":email", $email);
+			$send_data->bindParam(":tel", $tel);
+			$send_data->bindParam(":content", $content);
 			$send_data->execute();
 
-			if($send_data){
+			if ($send_data) {
 				echo '<script>alert("ส่งข้อมูลเรียบร้อยแล้ว")</script>';
 				echo "<meta http-equiv='Refresh' content='0.001; url=contact.php'>";
-			}else{
+			} else {
 				echo '<script>alert("มีบางอย่างผิดพลาด")</script>';
 				echo "<meta http-equiv='Refresh' content='0.001; url=contact.php'>";
 			}
-		}catch (PDOException $e){
+		} catch (PDOException $e) {
 			echo $e->getMessage();
 		}
 	}
-	
-	
-
 }
 ?>
 
@@ -130,7 +143,7 @@ if(isset($_POST['submit_contact'])){
 				<?php include("navigator.php"); ?>
 				<div class="text-center mb-5">
 					<div class="page-header ">
-						<h2>ติดต่อเรา</h2>
+						<h2><?php if($lang == 'en'){echo "Contact";}else{echo "ติดต่อเรา";} ?></h2>
 					</div>
 				</div>
 
@@ -143,18 +156,18 @@ if(isset($_POST['submit_contact'])){
 						<div class="box-contact">
 							<h4>Busines Development And Design</h4>
 							<ul>
-								<li class="mb-4"><?= $row_about["address"]?><br>
-									</li>
-								<li>โทร : <?= $row_about["tel1"]?><br>
-								โทรสาร : <?= $row_about["tel2"]?></li>
-								<li><?= $row_about["email"]?></li>
+								<li class="mb-4"><?= $row_about["address"] ?><br>
+								</li>
+								<li><?php if($lang == 'en'){echo "Phone ";}else{echo "โทร ";} ?> <?= $row_about["tel1"] ?><br>
+								<?php if($lang == 'en'){echo "Fax ";}else{echo "โทรสาร ";} ?> <?= $row_about["tel2"] ?></li>
+								<li><?= $row_about["email"] ?></li>
 							</ul>
 
 
 
 							<img class="img-fluid" src="webpanel/assets/about_me/<?= $row_about['line_qr'] ?>" alt="ยกับเราทาง Line">
 
-							<h4 class="mt-4 mt-lg-0">คุยกับเราทาง Line<br>Line ID : Busines</h4>
+							<h4 class="mt-4 mt-lg-0"><?php if($lang == 'en'){echo "Talk to us via";}else{echo "คุยกับเราทาง";} ?> Line<br>Line ID : Busines</h4>
 
 
 
@@ -170,33 +183,33 @@ if(isset($_POST['submit_contact'])){
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group mb-3">
-										<label for="inputName">ชื่อเรื่อง</label>
-										<input  type="text" name="title_name" class="form-control rounded-0" id="inputName" placeholder="กรอกชื่อเรื่อง">
+										<label for="inputName"><?php if($lang == 'en'){echo "Topic";}else{echo "ชื่อเรื่อง";} ?></label>
+										<input type="text" name="title_name" class="form-control rounded-0" id="inputName" placeholder="<?php if($lang == 'en'){echo "Inform Topic";}else{echo "กรอกชื่อเรื่อง";} ?>">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group mb-3">
-										<label for="inputName">ชื่อ</label>
-										<input  type="text" name="name" class="form-control rounded-0" id="inputName" placeholder="กรอกชื่อ">
+										<label for="inputName"><?php if($lang == 'en'){echo "Name";}else{echo "ชื่อ";} ?></label>
+										<input type="text" name="name" class="form-control rounded-0" id="inputName" placeholder="<?php if($lang == 'en'){echo "Inform Name";}else{echo "กรอกชื่อ";} ?>">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group mb-3">
-										<label for="inputEmail">อีเมล</label>
-										<input  type="email" name="email" class="form-control rounded-0" id="inputEmail" placeholder="กรอกอีเมล">
+										<label for="inputEmail"><?php if($lang == 'en'){echo "Email";}else{echo "อีเมล";} ?></label>
+										<input type="email" name="email" class="form-control rounded-0" id="inputEmail" placeholder="<?php if($lang == 'en'){echo "Inform Email";}else{echo "กรอกอีเมล";} ?>">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group mb-3">
-										<label for="inputEmail">โทรศัพท์</label>
-										<input  type="tel" name="tel" class="form-control rounded-0" id="inputEmail" placeholder="กรอกโทรศัพท์">
+										<label for="inputEmail"><?php if($lang == 'en'){echo "Phone";}else{echo "โทรศัพท์";} ?></label>
+										<input type="tel" name="tel" class="form-control rounded-0" id="inputEmail" placeholder="<?php if($lang == 'en'){echo "Inform Phone";}else{echo "กรอกโทรศัพท์";} ?>">
 									</div>
 								</div>
 
 								<div class="col-md-12">
 									<div class="form-group mb-3">
-										<label for="inputName">ข้อความ</label>
-										<textarea name="content" class="form-control rounded-0" rows="8" placeholder="เขียนข้อความของคุณที่นี่" id="textareaMessage"></textarea>
+										<label for="inputName"><?php if($lang == 'en'){echo "Text";}else{echo "ข้อความ";} ?></label>
+										<textarea name="content" class="form-control rounded-0" rows="8" placeholder="<?php if($lang == 'en'){echo "Write your message here.";}else{echo "เขียนข้อความของคุณที่นี่";} ?>" id="textareaMessage"></textarea>
 									</div>
 
 								</div>
@@ -208,8 +221,8 @@ if(isset($_POST['submit_contact'])){
 									</div>
 									<div class="clearfix mt-3"></div>
 
-									<button type="submit" name="submit_contact" class="btn btn btn-info btn-lg rounded-pill px-lg-5"><i class="icofont-send-mail"></i> ส่งข้อความ</button>
-									<a href="contact.php" class="btn btn btn-info btn-lg rounded-pill px-lg-5"><i class="icofont-refresh"></i> ล้างข้อมูล</a>
+									<button type="submit" name="submit_contact" class="btn btn btn-info btn-lg rounded-pill px-lg-5"><i class="icofont-send-mail"></i><?php if($lang == 'en'){echo "Submit";}else{echo "ส่งข้อความ";} ?> </button>
+									<a href="contact.php" class="btn btn btn-info btn-lg rounded-pill px-lg-5"><i class="icofont-refresh"></i><?php if($lang == 'en'){echo "Cleanup";}else{echo "ล้างข้อมูล";} ?> </a>
 								</div>
 							</div>
 

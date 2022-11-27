@@ -38,6 +38,11 @@
 	<link href="css/slick-custom.css?v=1001" rel="stylesheet">
 
 </head>
+<?php
+require_once('config/bddesign_db.php');
+session_start();
+unset($_SESSION['lang']);
+?>
 <body>
 	<main>
 

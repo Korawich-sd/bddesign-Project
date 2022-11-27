@@ -22,11 +22,11 @@
     width: 100%;
     height: fit-content;
     margin: 10px;
-
+    
 }
 
 .btn-add-blog {
-    width: 120px;
+    width: 250px;
     height: 40px;
     border-radius: 5px;
     border: none;
@@ -39,4 +39,65 @@
 .btn-add-blog:hover {
     background-color: #484aa7;
     cursor: pointer;
+}
+@media (max-width: 768px) {
+   
+}
+
+@media (min-width: 1200px) {
+    .box-add-blog {
+        width: 100%;
+        height: fit-content;
+        padding: 20px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+       
+    }
+    .btn-add-blog {
+        width: 250px;
+        height: 40px;
+        margin: 5px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        color: #FFFFFF;
+        background-color: #696cff;
+        cursor: pointer;
+    }
+    #select-form{
+        width: 250px;
+    }
+    .btn-lang{
+        width: 31%;
+        display: flex;
+    }
+    .add-blog {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 20px;
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .box-title-add{
+        width: 100%;
+        padding: 0px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .btn-blog-en{
+        width: 180px;
+        height: 40px;
+        margin: 5px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        color: #FFFFFF;
+        background-color: #696cff;
+        cursor: pointer;
+    }
 }
