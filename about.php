@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="desktop">
+
 <head>
 
 	<link rel="shortcut icon" href="images/favicon.ico">
@@ -21,7 +22,7 @@
 	<link rel="stylesheet" type="text/css" href="css/fontello.css?v=1001">
 	<link href="css/spinner.css?v=1001" rel="stylesheet">
 	<!-- CSS only -->
-	<link href="css/bootstrap.min.css?v=1001" rel="stylesheet" >
+	<link href="css/bootstrap.min.css?v=1001" rel="stylesheet">
 
 	<link rel="stylesheet" href="css/coreNavigation.css?v=1001" />
 	<link rel="stylesheet" href="css/typography.css?v=1001" />
@@ -42,86 +43,77 @@
 <?php
 require_once('config/bddesign_db.php');
 session_start();
+
+$_SESSION['lang'] = "";
+if (isset($_GET['lang']) && $_GET['lang'] != "") {
+	$_SESSION['lang'] = $_GET['lang'];
+    $lang = $_GET['lang'];
+	if ($_SESSION['lang'] == "en") {
+		$stmt = $conn->prepare("SELECT * FROM about_us_en");
+		$stmt->execute();
+		$row_about_us = $stmt->fetchAll();
+	} else {
+		$stmt = $conn->prepare("SELECT * FROM about_us");
+		$stmt->execute();
+		$row_about_us = $stmt->fetchAll();
+	}
+} else {
+	$stmt = $conn->prepare("SELECT * FROM about_us");
+	$stmt->execute();
+	$row_about_us = $stmt->fetchAll();
+}
+
+
 ?>
+
 <body>
 	<main>
-
-
-
-		<?php include("header.php");?>
-		
-
-
+		<?php include("header.php"); ?>
 		<div class="slider">
-
-
-
-
-
-
 			<div class="ps-0 pe-0">
-
 				<div class="item-slide">
 					<div class="slide-img">
 						<img class="img-fluid w-100" src="upload/page.webp">
 					</div>
-
 				</div>
-
-			</div>    
-
-
-
+			</div>
 		</div>
-
-
 		<section id="page-section">
 			<div class="container-xxl">
 
-				<?php include("navigator.php");?>
+				<?php include("navigator.php"); ?>
 				<div class="text-center mb-5">
 					<div class="page-header ">
-						<h2>เกี่ยวกับเรา</h2>
+						<h2><?php if ($lang == "en") {
+								echo "About Me";
+							}else if($lang == "th"){
+								echo "เกี่ยวกับเรา";
+							}else{
+								echo "เกี่ยวกับเรา";
+							}
+							?></h2>
 					</div>
 				</div>
 
-
-<p>บริการยื่นขออนุญาต ยื่นกู้ธนาคาร ตลอดจนกระบวนการก่อสร้างที่ได้ มาตรฐานตามหลักวิศวกรรม โดยมีวิศวกรควบคุม มีการรับประกันหลัง ส่งมอบบ้าน แม้ว่าจะเป็นการสร้างบ้านหลังแรกหรือหลังที่เท่าไหร่ เราก็มี ทีมงานคุณภาพที่พร้อมให้คำปรึกษาเหมือนเป็นทีมก่อสร้างของคุณเอง</p>
-				
-				<h4>Civil Engineering</h4> 
-				<ol>
-					<li>Survey and Project Planing</li>
-					<li>Reseach For Development</li>
-					<li>Marketing For Development</li>
-					<li>Design and construciton of Rainceforce Concrete</li>
-					<li>Design and construction of Steel work</li>
-					<li>Decoration/Landscape work</li>
-					<li>Design Perpective 3D</li>
-				</ol>
-				<h4>Mechanical Engineer</h4>
-				<ol>
-					<li>Indoor Ventilation system (Design and Installaiton)</li>
-					<li>Piping system (Design and Installation)</li>  
-					<li>Sanitary system</li>
-				</ol>
-				<h4>Electricity Engineering</h4>
-				<ol>
-					<li> Main low voltage distribution board.</li>
-					<li> Computer, Telephone, CCTV, Sound and system.</li>
-					<li> Fire alarm system.</li>
-				</ol>
-				<h4>Feasibility Study</h4>
-				<ol>
-					<li>Feasibility study for construciton for comercial building</li>
-					<li>Initial Environmental Evaluation</li> 
-				</ol>
-
-
+				<?php
+				for ($i = 0; $i < count($row_about_us); $i++) {
+					$content[] = explode(";", $row_about_us[$i]["content"]);
+					$count_content = $content[$i];
+				?>
+					<p><?= $row_about_us[$i]["title"] ?></p>
+					<h4><?= $row_about_us[$i]["topic"] ?></h4>
+					<ol>
+						<?php
+						for ($j = 1; $j < count($count_content); $j++) { ?>
+							<li><?php echo  $content[$i][$j]; ?></li>
+						<?php }
+						?>
+					</ol>
+				<?php	}
+				?>
 				<div class="text-center">
-					<img class="img-fluid" src="upload/g03.webp">
+					<img class="img-fluid" src="webpanel/assets/about_me/<?= $row_about_us[0]["img"] ?>">
 				</div>
-
-
 			</div>
 		</section>
 
@@ -136,7 +128,7 @@ session_start();
 
 
 
-	<?php include("footer.php");?>
+	<?php include("footer.php"); ?>
 
 
 	<script src="js/bootstrap.bundle.min.js?v=1001"></script>
@@ -144,7 +136,7 @@ session_start();
 	<script src="js/coreNavigation.js?v=1001"></script>
 	<script>
 		$('nav').coreNavigation({
-			menuPosition: "center", 
+			menuPosition: "center",
 			container: true,
 			responsideSlide: true, // true or false
 			mode: 'sticky',
@@ -166,13 +158,12 @@ session_start();
 	</script>
 
 	<script type="text/javascript">
-
-		'use strict'; 
-		var $window = $(window); 
+		'use strict';
+		var $window = $(window);
 		$window.on({
-			'load': function () {
+			'load': function() {
 
-				/* Preloader */ 
+				/* Preloader */
 				$('.spinner').fadeOut(1500);
 
 
@@ -180,7 +171,6 @@ session_start();
 			},
 
 		});
-
 	</script>
 
 
@@ -189,8 +179,6 @@ session_start();
 
 
 	<script type="text/javascript">
-
-
 		$(document).ready(function() {
 			$("a#list").click(function() {
 				var list_y = $(this).attr("data-test");
@@ -209,7 +197,7 @@ session_start();
 	<!-- Template Functions -->
 	<script src="js/functions.js?v=1001"></script>
 
-	<script  src="js/lazyload.js?v=1001"></script>
+	<script src="js/lazyload.js?v=1001"></script>
 
 	<script src="js/jquery.chocolat.js"></script>
 	<script type="text/javascript">
@@ -221,4 +209,5 @@ session_start();
 	</script>
 </body>
 </body>
+
 </html>

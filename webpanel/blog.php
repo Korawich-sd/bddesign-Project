@@ -123,48 +123,50 @@ if (isset($_GET['delete_blog_id']) && isset($_GET['lang'])) {
                 <a href="?lang=en"><button class="btn-blog-en">ดูบทความภาษาอังกฤษ</button></a>
             </div>
         </div>
-        <table class="table">
-            <thead>
-                <tr align="center">
-                    <!-- <th scope="col">#</th> -->
-                    <th scope="col">รูปหน้าปก</th>
-                    <th scope="col">ชื่อบทความ</th>
-                    <th scope="col">วันที่สร้าง</th>
-                    <th scope="col">จัดการ</th>
-                </tr>
-            </thead>
-            <tbody> <?php
-                    $i = 1;
-                    if (!$row_blog) {
-                        echo "ยังไม่มีบทความ";
-                    } else {
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr align="center">
+                        <!-- <th scope="col">#</th> -->
+                        <th scope="col">รูปหน้าปก</th>
+                        <th scope="col">ชื่อบทความ</th>
+                        <th scope="col">วันที่สร้าง</th>
+                        <th scope="col">จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody> <?php
+                        $i = 1;
+                        if (!$row_blog) {
+                            echo "ยังไม่มีบทความ";
+                        } else {
 
-                        foreach ($row_blog as $row_blog) { ?>
-                        <tr align="center">
-                            <!-- <th scope="row"><?= $i  ?></th> -->
-                            <td><img width="80px" src="assets/blog_upload/<?= $row_blog['blog_img1'] ?>" alt=""></td>
-                            <td><?= $row_blog["title_blog"] ?></td>
-                            <td><?= $row_blog["created_blog"] ?></td>
-                            <td>
-                                <a href="<?php if ($lang == "en") {
-                                                echo "edit_blog_en.php";
-                                            } else {
-                                                echo "edit_blog.php";
-                                            } ?>?blog_id=<?= $row_blog['id'] ?>"><button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button></a>
-                                <a href="blog.php?delete_blog_id=<?= $row_blog['id'] ?><?php if ($lang == "en") {
-                                                                                            echo "&lang=en";
-                                                                                        } else {
-                                                                                            echo "";
-                                                                                        } ?>" onclick="return confirm('คุณต้องการลบบทความนี้ใช่ไหม')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
-                            </td>
-                        </tr>
-                <?php $i++;
+                            foreach ($row_blog as $row_blog) { ?>
+                            <tr align="center">
+                                <!-- <th scope="row"><?= $i  ?></th> -->
+                                <td><img width="80px" src="assets/blog_upload/<?= $row_blog['blog_img1'] ?>" alt=""></td>
+                                <td><?= $row_blog["title_blog"] ?></td>
+                                <td><?= $row_blog["created_blog"] ?></td>
+                                <td>
+                                    <a href="<?php if ($lang == "en") {
+                                                    echo "edit_blog_en.php";
+                                                } else {
+                                                    echo "edit_blog.php";
+                                                } ?>?blog_id=<?= $row_blog['id'] ?>"><button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button></a>
+                                    <a href="blog.php?delete_blog_id=<?= $row_blog['id'] ?><?php if ($lang == "en") {
+                                                                                                echo "&lang=en";
+                                                                                            } else {
+                                                                                                echo "";
+                                                                                            } ?>" onclick="return confirm('คุณต้องการลบบทความนี้ใช่ไหม')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
+                                </td>
+                            </tr>
+                    <?php $i++;
+                            }
                         }
-                    }
-                ?>
-            </tbody>
+                    ?>
+                </tbody>
 
-        </table>
+            </table>
+        </div>
         <ul class="pagination justify-content-center mt-5">
             <li <?php if ($page == 1) {
                     echo "class='page-item disabled'";

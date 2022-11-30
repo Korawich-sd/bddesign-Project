@@ -22,7 +22,7 @@
     width: 100%;
     height: fit-content;
     margin: 10px;
-    
+
 }
 
 .btn-add-blog {
@@ -40,20 +40,40 @@
     background-color: #484aa7;
     cursor: pointer;
 }
-@media (max-width: 768px) {
-   
+
+.btn-blog-en {
+    width: 180px;
+    height: 40px;
+    margin: 5px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    color: #FFFFFF;
+    background-color: #696cff;
+    cursor: pointer;
 }
 
-@media (min-width: 1200px) {
+@media (max-width: 768px) {
+    .btn-blog-en {
+        width: 250px;
+        height: 40px;
+        margin: 5px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        color: #FFFFFF;
+        background-color: #696cff;
+        cursor: pointer;
+    }
+
     .box-add-blog {
         width: 100%;
         height: fit-content;
         padding: 20px;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-       
+        display: block;
+        text-align: right;
     }
+
     .btn-add-blog {
         width: 250px;
         height: 40px;
@@ -65,13 +85,41 @@
         background-color: #696cff;
         cursor: pointer;
     }
-    #select-form{
+
+}
+
+@media (min-width: 1200px) {
+    .box-add-blog {
+        width: 100%;
+        height: fit-content;
+        padding: 20px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+    }
+
+    .btn-add-blog {
+        width: 250px;
+        height: 40px;
+        margin: 5px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        color: #FFFFFF;
+        background-color: #696cff;
+        cursor: pointer;
+    }
+
+    #select-form {
         width: 250px;
     }
-    .btn-lang{
+
+    .btn-lang {
         width: 31%;
         display: flex;
     }
+
     .add-blog {
         font-size: 20px;
         font-weight: bold;
@@ -82,14 +130,16 @@
         justify-content: space-between;
         align-items: center;
     }
-    .box-title-add{
+
+    .box-title-add {
         width: 100%;
         padding: 0px;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-    .btn-blog-en{
+
+    .btn-blog-en {
         width: 180px;
         height: 40px;
         margin: 5px;

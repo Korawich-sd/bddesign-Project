@@ -25,6 +25,7 @@ if (isset($_SESSION['admin_login'])) {
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="adimage/logo_bd.png" />
 
@@ -57,6 +58,7 @@ if (isset($_SESSION['admin_login'])) {
 
 
 </head>
+
 <body style="font-family: 'Kanit', sans-serif;">
 
 
@@ -85,10 +87,11 @@ if (isset($_SESSION['admin_login'])) {
                 <ul class="menu-inner py-1">
 
                     <!-- Dashboard -->
-                    
+
                     <li class="menu-item " id="home">
                         <a href="index.php" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                        <i class="menu-icon bi bi-house"></i>
+                            
                             <div data-i18n="Analytics">หน้าหลัก</div>
                         </a>
                     </li>
@@ -96,23 +99,42 @@ if (isset($_SESSION['admin_login'])) {
                     <!-- Performance -->
                     <li class="menu-item  " id="portfolio">
                         <a href="portfolio.php" class="menu-link ">
-                            <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
+                        <i class="menu-icon bi bi-grid-3x3-gap"></i>
+                           
                             <div>ผลงาน</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item  " id="portfolio">
+                        <a href="#" class="menu-link ">
+                      
+                        <i class="menu-icon bi bi-layout-text-window-reverse"></i>
+                            <div>บริการ</div>
                         </a>
                     </li>
 
                     <!-- Aticle -->
                     <li class="menu-item " id="blog">
                         <a href="blog.php" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                        <i class="menu-icon bi bi-journals"></i>
                             <div data-i18n="blog">บทความ</div>
+                        </a>
+                    </li>
+
+                    <!-- Aticle -->
+                    <li class="menu-item " id="blog">
+                        <a href="about_us.php" class="menu-link">
+                        <i class="menu-icon bi bi-file-earmark-person-fill"></i>
+                    
+                            <div data-i18n="blog">เกี่ยวกับเรา</div>
                         </a>
                     </li>
 
                     <!-- About -->
                     <li class="menu-item " id="aboutme">
                         <a href="contact.php" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-box"></i>
+                        <i class="menu-icon bi bi-telephone"></i>
+                        
                             <div>ติดต่อเรา</div>
                         </a>
                     </li>
@@ -234,7 +256,7 @@ if (isset($_SESSION['admin_login'])) {
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <script>
-       
+
     </script>
 </body>
 

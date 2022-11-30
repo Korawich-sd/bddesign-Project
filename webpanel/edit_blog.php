@@ -70,6 +70,56 @@ if (isset($_POST['edit-blog'])) {
                         }
                     }
                 }
+            } else if (in_array($fileActExt1, $allow) && in_array($fileActExt2, $allow)) {
+                if ($img1['size'] > 0 && $img1['error'] == 0 && $img2['size'] > 0 && $img2['error'] == 0) {
+                    if (move_uploaded_file($img1['tmp_name'], $filePath1) && move_uploaded_file($img2['tmp_name'], $filePath2)) {
+                        $insert_blog = $conn->prepare("UPDATE blog SET title_blog = :title_blog, paragraph1 = :paragraph1,
+                                                 paragraph2 = :paragraph2, paragraph3 = :paragraph3, paragraph4 = :paragraph4,
+                                                  blog_img1 = :blog_img1, blog_img2 = :blog_img2 WHERE id = :id");
+
+                        $insert_blog->bindParam(":title_blog", $title_blog);
+                        $insert_blog->bindParam(":paragraph1", $paragraph1);
+                        $insert_blog->bindParam(":paragraph2", $paragraph2);
+                        $insert_blog->bindParam(":paragraph3", $paragraph3);
+                        $insert_blog->bindParam(":paragraph4", $paragraph4);
+                        $insert_blog->bindParam(":blog_img1", $fileNew1);
+                        $insert_blog->bindParam(":blog_img2", $fileNew2);
+                       // $insert_blog->bindParam(":blog_img3", $fileNew3);
+                        $insert_blog->bindParam(":id", $blog_id);
+                        $insert_blog->execute();
+                        if ($insert_blog) {
+                            echo "<script>alert('แก้ไขบทความเรียบร้อยแล้ว')</script>";
+                            echo "<meta http-equiv='Refresh' content='0.001; url=blog.php'>";
+                        } else {
+                            echo "<script>alert('มีบางอย่างผิดพลาด')</script>";
+                        }
+                    }
+                }
+            } else if (in_array($fileActExt1, $allow) ) {
+                if ($img1['size'] > 0 && $img1['error'] == 0) {
+                    if (move_uploaded_file($img1['tmp_name'], $filePath1)) {
+                        $insert_blog = $conn->prepare("UPDATE blog SET title_blog = :title_blog, paragraph1 = :paragraph1,
+                                                 paragraph2 = :paragraph2, paragraph3 = :paragraph3, paragraph4 = :paragraph4,
+                                                  blog_img1 = :blog_img1 WHERE id = :id");
+
+                        $insert_blog->bindParam(":title_blog", $title_blog);
+                        $insert_blog->bindParam(":paragraph1", $paragraph1);
+                        $insert_blog->bindParam(":paragraph2", $paragraph2);
+                        $insert_blog->bindParam(":paragraph3", $paragraph3);
+                        $insert_blog->bindParam(":paragraph4", $paragraph4);
+                        $insert_blog->bindParam(":blog_img1", $fileNew1);
+                        // $insert_blog->bindParam(":blog_img2", $fileNew2);
+                        // $insert_blog->bindParam(":blog_img3", $fileNew3);
+                        $insert_blog->bindParam(":id", $blog_id);
+                        $insert_blog->execute();
+                        if ($insert_blog) {
+                            echo "<script>alert('แก้ไขบทความเรียบร้อยแล้ว')</script>";
+                            echo "<meta http-equiv='Refresh' content='0.001; url=blog.php'>";
+                        } else {
+                            echo "<script>alert('มีบางอย่างผิดพลาด')</script>";
+                        }
+                    }
+                }
             } else {
                 $insert_blog = $conn->prepare("UPDATE blog SET title_blog = :title_blog, paragraph1 = :paragraph1,
                 paragraph2 = :paragraph2, paragraph3 = :paragraph3, paragraph4 = :paragraph4,
@@ -150,18 +200,30 @@ if (isset($_POST['edit-blog'])) {
                         <div class="txt-img mt-4"><span>รูปภาพเดิม</span></div>
                         <div class="pos">
                             <?php
-                            $row_img1 = explode(".",$row_data_blog["blog_img1"]);
-                            $row_img2 = explode(".",$row_data_blog["blog_img2"]);
-                            $row_img3 = explode(".",$row_data_blog["blog_img3"]);
-                                ?>
+                            $row_img1 = explode(".", $row_data_blog["blog_img1"]);
+                            $row_img2 = explode(".", $row_data_blog["blog_img2"]);
+                            $row_img3 = explode(".", $row_data_blog["blog_img3"]);
+                            ?>
                             <div class="filewrap">
-                                <img width="100%" src="assets/blog_upload/<?php if($row_img1[1] == null){echo 'file-upload.png';}else{echo $row_data_blog['blog_img1'];}?>" alt="ไม่มีรูปภาพ">
+                                <img width="100%" src="assets/blog_upload/<?php if ($row_img1[1] == null) {
+                                                                                echo 'file-upload.png';
+                                                                            } else {
+                                                                                echo $row_data_blog['blog_img1'];
+                                                                            } ?>" alt="ไม่มีรูปภาพ">
                             </div>
                             <div class="filewrap">
-                                <img width="100%" src="assets/blog_upload/<?php if($row_img2[1] == null){echo 'file-upload.png';}else{echo $row_data_blog['blog_img2'];}?>" alt="ไม่มีรูปภาพ">
+                                <img width="100%" src="assets/blog_upload/<?php if ($row_img2[1] == null) {
+                                                                                echo 'file-upload.png';
+                                                                            } else {
+                                                                                echo $row_data_blog['blog_img2'];
+                                                                            } ?>" alt="ไม่มีรูปภาพ">
                             </div>
                             <div class="filewrap">
-                                <img width="100%" src="assets/blog_upload/<?php if($row_img3[1] == null){echo 'file-upload.png';}else{echo $row_data_blog['blog_img3'];}?>"alt="ไม่มีรูปภาพ">
+                                <img width="100%" src="assets/blog_upload/<?php if ($row_img3[1] == null) {
+                                                                                echo 'file-upload.png';
+                                                                            } else {
+                                                                                echo $row_data_blog['blog_img3'];
+                                                                            } ?>" alt="ไม่มีรูปภาพ">
                             </div>
                         </div>
                     </div>
